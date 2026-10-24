@@ -52,49 +52,52 @@ class Plan(val nodes: List<Node>, val labels: Map<Sys, String>, val links: List<
  * the armour along the limbs and the network out past the hands.
  */
 object Body {
-    const val TOP = -6f
+    const val TOP = -14f
     const val BOTTOM = 404f
-    val head = Offset(0f, 38f)
-    const val HEAD_RX = 21f
-    const val HEAD_RY = 26f
-    const val RING = 41f
+    val head = Offset(0f, 26f)
+    const val HEAD_RX = 17f
+    const val HEAD_RY = 23f
+    const val RING = 37f
 
-    /** The right half of the outline, from the neck down to the crotch; the left is its mirror. */
+    /** The right half of the outline, from the neck down the arm and leg to the crotch; the left is its mirror. Eight heads tall, arms a little out. */
     private val right = listOf(
-        Offset(8f, 62f), Offset(10f, 75f), Offset(28f, 82f), Offset(44f, 89f), Offset(50f, 104f), Offset(53f, 130f), Offset(56f, 156f),
-        Offset(60f, 186f), Offset(63f, 214f), Offset(65f, 228f), Offset(68f, 246f), Offset(62f, 254f), Offset(56f, 244f), Offset(53f, 226f),
-        Offset(48f, 190f), Offset(43f, 158f), Offset(39f, 126f), Offset(35f, 116f), Offset(33f, 146f), Offset(30f, 182f), Offset(35f, 214f),
-        Offset(37f, 256f), Offset(32f, 298f), Offset(33f, 330f), Offset(25f, 374f), Offset(33f, 392f), Offset(10f, 394f), Offset(12f, 374f),
-        Offset(14f, 330f), Offset(12f, 298f), Offset(8f, 256f), Offset(0f, 236f),
+        Offset(7f, 50f), Offset(8f, 60f), Offset(20f, 66f), Offset(36f, 71f), Offset(45f, 78f), Offset(49.7f, 92f), Offset(53.9f, 118f),
+        Offset(59.6f, 150f), Offset(63.5f, 160f), Offset(69.4f, 195f), Offset(73.7f, 222f), Offset(78.8f, 234f), Offset(81.3f, 252f), Offset(77.1f, 262f),
+        Offset(70.8f, 258f), Offset(67.3f, 240f), Offset(63.9f, 224f), Offset(57.5f, 196f), Offset(51.6f, 162f), Offset(47.6f, 150f), Offset(40.9f, 118f),
+        Offset(33f, 100f), Offset(33f, 118f), Offset(32f, 140f), Offset(28f, 168f), Offset(30f, 190f), Offset(35f, 212f), Offset(36f, 240f),
+        Offset(33f, 272f), Offset(29f, 300f), Offset(31f, 325f), Offset(28f, 355f), Offset(20f, 382f), Offset(27f, 392f), Offset(25f, 398f),
+        Offset(9f, 398f), Offset(9f, 384f), Offset(11f, 355f), Offset(12f, 325f), Offset(10f, 300f), Offset(8f, 272f), Offset(5f, 248f),
+        Offset(0f, 236f),
     )
 
     val hubs: Map<Sys, Offset> = mapOf(
         Sys.SLEEP to Offset(head.x + RING * cos(-2.4f), head.y + RING * sin(-2.4f)),
-        Sys.MIND to Offset(0f, 30f),
-        Sys.CALM to Offset(-17f, 104f),
-        Sys.JOY to Offset(6f, 132f),
-        Sys.FUEL to Offset(0f, 170f),
-        Sys.SHIELD to Offset(44f, 92f),
-        Sys.MOVE to Offset(-21f, 300f),
-        Sys.LINK to Offset(66f, 252f),
+        Sys.MIND to Offset(11f, 15f),
+        Sys.CALM to Offset(-25f, 96f),
+        Sys.JOY to Offset(14f, 134f),
+        Sys.FUEL to Offset(-17f, 166f),
+        Sys.SHIELD to Offset(46f, 82f),
+        Sys.MOVE to Offset(-20f, 300f),
+        Sys.LINK to Offset(76f, 262f),
     )
 
     /** Where each system's label sits (unit y) and on which side. */
     val labels: Map<Sys, Pair<Float, Boolean>> = mapOf(
-        Sys.SLEEP to (12f to false), Sys.CALM to (104f to false), Sys.FUEL to (172f to false), Sys.MOVE to (300f to false),
-        Sys.MIND to (24f to true), Sys.SHIELD to (84f to true), Sys.JOY to (140f to true), Sys.LINK to (206f to true),
+        Sys.SLEEP to (2f to false), Sys.CALM to (102f to false), Sys.FUEL to (164f to false), Sys.MOVE to (300f to false),
+        Sys.MIND to (16f to true), Sys.SHIELD to (76f to true), Sys.JOY to (136f to true), Sys.LINK to (206f to true),
     )
 
     /** The [i]-th point of a sunflower spread filling an ellipse at about [n] points. */
     private fun sunflower(c: Offset, rx: Float, ry: Float, i: Int, n: Int = 12): Offset {
-        val r = sqrt((i + .5f) / n).coerceAtMost(1.35f)
-        val a = i * 2.39996f
+        val k = i + 2
+        val r = sqrt((k + .5f) / (n + 2)).coerceAtMost(1.35f)
+        val a = k * 2.39996f
         return Offset(c.x + rx * r * cos(a), c.y + ry * r * sin(a))
     }
 
     /** The [i]-th node position of a system. */
     fun slot(s: Sys, i: Int): Offset = when (s) {
-        Sys.MIND -> sunflower(Offset(0f, 33f), 13f, 13f, i)
+        Sys.MIND -> sunflower(Offset(0f, 22f), 11f, 10f, i)
         Sys.SLEEP -> {
             val ring = i / 11
             val k = i % 11
@@ -103,38 +106,38 @@ object Body {
             val r = RING + ring * 8f
             Offset(head.x + r * cos(a), head.y + r * sin(a))
         }
-        Sys.CALM -> { val side = if (i % 2 == 0) -1f else 1f; sunflower(Offset(17f * side, 105f), 9f, 15f, i / 2, 7) }
-        Sys.JOY -> sunflower(Offset(5f, 134f), 9f, 9f, i, 8)
-        Sys.FUEL -> sunflower(Offset(0f, 170f), 18f, 12f, i)
+        Sys.CALM -> { val side = if (i % 2 == 0) -1f else 1f; sunflower(Offset(15f * side, 102f), 8f, 13f, i / 2, 7) }
+        Sys.JOY -> sunflower(Offset(5f, 130f), 7f, 7f, i, 8)
+        Sys.FUEL -> sunflower(Offset(0f, 162f), 16f, 10f, i)
         Sys.SHIELD -> {
             val side = if (i % 2 == 0) 1f else -1f
-            val ys = floatArrayOf(98f, 122f, 146f, 170f, 194f, 218f, 110f, 134f, 158f, 182f, 206f)
+            val ys = floatArrayOf(100f, 124f, 148f, 172f, 196f, 220f, 112f, 136f, 160f, 184f, 208f)
             val y = ys[(i / 2) % ys.size]
-            val x = 45f + (y - 98f) * .118f + (i / 22) * 4f
+            // down the middle of the arm, which leans out a little
+            val x = 47.4f + (y - 118f) * .205f + (i / 22) * 4f
             Offset(x * side, y)
         }
         Sys.MOVE -> {
             val side = if (i % 2 == 0) -1f else 1f
             val ys = floatArrayOf(246f, 272f, 320f, 346f, 368f, 232f, 259f, 284f, 333f, 357f)
             val y = ys[(i / 2) % ys.size]
-            val x = when { y < 290f -> 21f; y < 340f -> 22f - (y - 290f) * .05f; else -> 19f } + (i / 20) * 3f
+            val x = when { y < 290f -> 20f; y < 340f -> 20.5f; else -> 21f - (y - 340f) * .15f } + (i / 20) * 3f
             Offset(x * side, y)
         }
-        Sys.LINK -> { val side = if (i % 2 == 0) 1f else -1f; sunflower(Offset(86f * side, 268f), 16f, 16f, i / 2, 6) }
+        Sys.LINK -> { val side = if (i % 2 == 0) 1f else -1f; sunflower(Offset(86f * side, 292f), 13f, 13f, i / 2, 6) }
     }
 
-    /** A smooth closed outline through the points (Catmull–Rom turned into cubic curves). */
+    /** A smooth closed outline: the corners cut three times (Chaikin), which rounds them without overshooting. */
     fun outline(map: (Offset) -> Offset): Path {
-        val pts = right.map(map) + right.reversed().drop(1).dropLast(1).map { map(Offset(-it.x, it.y)) }
-        val p = Path()
-        val n = pts.size
-        p.moveTo(pts[0].x, pts[0].y)
-        for (i in 0 until n) {
-            val p0 = pts[(i - 1 + n) % n]; val p1 = pts[i]; val p2 = pts[(i + 1) % n]; val p3 = pts[(i + 2) % n]
-            val c1 = p1 + (p2 - p0) / 6f
-            val c2 = p2 - (p3 - p1) / 6f
-            p.cubicTo(c1.x, c1.y, c2.x, c2.y, p2.x, p2.y)
+        var pts = right + right.reversed().drop(1).map { Offset(-it.x, it.y) }
+        repeat(3) {
+            pts = pts.indices.flatMap { i ->
+                val a = pts[i]; val b = pts[(i + 1) % pts.size]
+                listOf(a * .75f + b * .25f, a * .25f + b * .75f)
+            }
         }
+        val p = Path()
+        pts.map(map).forEachIndexed { i, o -> if (i == 0) p.moveTo(o.x, o.y) else p.lineTo(o.x, o.y) }
         p.close()
         return p
     }
@@ -194,17 +197,17 @@ private fun DrawScope.drawBody(g: Geo) {
     drawOval(C.line.copy(alpha = .06f), Offset(c.x - Body.HEAD_RX * g.k, c.y - Body.HEAD_RY * g.k), Size(2 * Body.HEAD_RX * g.k, 2 * Body.HEAD_RY * g.k))
     drawOval(C.line, Offset(c.x - Body.HEAD_RX * g.k, c.y - Body.HEAD_RY * g.k), Size(2 * Body.HEAD_RX * g.k, 2 * Body.HEAD_RY * g.k), style = Stroke(w))
     // midline, dash-dot
-    drawLine(C.faint.copy(alpha = .7f), g.at(Offset(0f, 2f)), g.at(Offset(0f, 398f)), 1f, pathEffect = PathEffect.dashPathEffect(floatArrayOf(18f, 6f, 3f, 6f)))
+    drawLine(C.faint.copy(alpha = .7f), g.at(Offset(0f, -8f)), g.at(Offset(0f, 400f)), 1f, pathEffect = PathEffect.dashPathEffect(floatArrayOf(18f, 6f, 3f, 6f)))
     // organs, dashed
     val dash = PathEffect.dashPathEffect(floatArrayOf(6f, 5f))
     fun oval(cu: Offset, rx: Float, ry: Float) {
         val p = g.at(cu)
         drawOval(C.muted.copy(alpha = .55f), Offset(p.x - rx * g.k, p.y - ry * g.k), Size(2 * rx * g.k, 2 * ry * g.k), style = Stroke(1.2f, pathEffect = dash))
     }
-    oval(Offset(0f, 31f), 15f, 14f)
-    oval(Offset(-17f, 105f), 11f, 18f); oval(Offset(17f, 105f), 11f, 18f)
-    oval(Offset(5f, 134f), 8f, 8f)
-    oval(Offset(0f, 170f), 19f, 13f)
+    oval(Offset(0f, 22f), 12f, 11f)
+    oval(Offset(-15f, 102f), 11f, 17f); oval(Offset(15f, 102f), 11f, 17f)
+    oval(Offset(5f, 130f), 7f, 7f)
+    oval(Offset(0f, 162f), 17f, 12f)
     // the clock dial round the head
     drawCircle(C.sys(Sys.SLEEP).copy(alpha = .45f), Body.RING * g.k, c, style = Stroke(1.2f, pathEffect = dash))
     for (i in 0 until 12) {
@@ -218,13 +221,8 @@ private val LABEL = TextStyle(fontFamily = Mono, fontSize = 10.sp, letterSpacing
 
 private fun DrawScope.drawSystems(g: Geo, nodes: Map<Sys, List<Node>>, plan: Plan, tm: TextMeasurer, pulse: Float) {
     val r = 3.4f * g.k
-    // combo links first, so nodes sit on top
-    val firstByTag = HashMap<String, Offset>()
-    for (s in Sys.entries) nodes[s].orEmpty().forEachIndexed { i, n -> if (n.state != NodeState.RUN) firstByTag.putIfAbsent(n.tagKey, g.at(Body.slot(s, i))) }
-    for (link in plan.links) {
-        val ps = link.mapNotNull { firstByTag[it] }
-        for (i in 0 until ps.size - 1) drawLine(C.amber.copy(alpha = .75f), ps[i], ps[i + 1], 1.4f, pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 4f)))
-    }
+    // tags that make up a found combo: their first installed node gets a gold ring
+    val comboTags = plan.links.flatten().toSet()
     for (s in Sys.entries) {
         val col = C.sys(s)
         val hub = g.at(Body.hubs.getValue(s))
@@ -256,6 +254,8 @@ private fun DrawScope.drawSystems(g: Geo, nodes: Map<Sys, List<Node>>, plan: Pla
             val p = g.at(Body.slot(s, i))
             when (n.state) {
                 NodeState.ON -> {
+                    if (n.tagKey in comboTags && list.indexOfFirst { it.tagKey == n.tagKey && it.state != NodeState.RUN } == i)
+                        drawCircle(C.amber, r * 2.4f, p, style = Stroke(1.4f, pathEffect = PathEffect.dashPathEffect(floatArrayOf(4f, 3f))))
                     drawCircle(col.copy(alpha = .22f), r * 2.2f, p)
                     drawCircle(col, r, p)
                     drawCircle(Color.White.copy(alpha = .8f), r * .35f, p)

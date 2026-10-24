@@ -145,6 +145,7 @@ fun BiohackerRoot(settings: Settings) {
     val overlays = remember { mutableStateListOf<Overlay>() }
     fun push(o: Overlay) = overlays.add(o)
     fun pop() { if (overlays.isNotEmpty()) overlays.removeAt(overlays.lastIndex) }
+    BackHandler(enabled = overlays.isNotEmpty()) { pop() }
     BackHandler(enabled = overlays.isEmpty() && tab != Tab.BLUEPRINT) { tab = Tab.BLUEPRINT }
     val nav = Nav(
         tab = { overlays.clear(); tab = it },
