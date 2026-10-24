@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A lab flask, filled to the line. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M9,2h6v2h-1v5l5.5,9.2c0.8,1.4 -0.2,2.8 -1.7,2.8H6.2c-1.5,0 -2.5,-1.4 -1.7,-2.8L10,9V4H9zM11,4.5h2v4.8l1.8,3h-5.6l1.8,-3z" />
+</vector>
