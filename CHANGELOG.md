@@ -9,7 +9,7 @@ then close it like any HTML comment. The release notes carry it, and the chat bo
 ## [1.0.0] - 2026-10-24
 
 ### Added
-- The blueprint: the body as a technical drawing with eight systems, where every installed mod lights up as a node, trials pulse, and combos are drawn as gold links.
+- The blueprint: the body as a technical drawing with eight systems, where every installed mod lights up as a node, trials pulse, and found combos are ringed in gold.
 - A catalogue of 1103 protocols in English and Russian. Each has an evidence class (A–D), rarity, load, time of day, length, frequency, cautions and the reasoning behind it. It has search and filters.
 - 14-day n=1 trials: five daily gauges, days with the mod against days without, a stamped protocol, and the choice to install, reject, extend or set aside.
 - Power that limits how much runs at once and grows with the firmware. Version and build numbers, weekly patch notes.
