@@ -30,7 +30,7 @@
 4. **Five readings a day.** Sleep, energy, mood, focus, calm — one tap each, about ten seconds.
 5. **Power.** Trials running at once can't outweigh your power: light mods take one unit, heavy ones three. Every two installed mods add a unit. That's how habits stick: a few at a time.
 6. **A parcel every day.** A sealed card arrives from the lab: common, rare or legendary, leaning towards the systems you care about. Sometimes it's a broken mod: one of 96 popular hacks that didn't hold up, with what the evidence actually says.
-7. **Hidden combos.** Forty pairings of mods, like morning light with cold water, or a walk with a friend. They are found by installing both halves and drawn as gold links on the blueprint.
+7. **Hidden combos.** Forty pairings of mods, like morning light with cold water, or a walk with a friend. They are found by installing both halves and ringed in gold on the blueprint.
 8. **Version and patch notes.** You start at v1.0, and every installed mod bumps the version. Each Monday brings patch notes: what was installed and rejected, which gauge went up, known issues.
 9. **Glitches, not failures.** A day in the red brings an emergency patch: three short, well-backed mods for whatever sagged. Uptime counts your days of readings, and one missed day a week is bridged.
 10. **Scheduled service.** Check-ups that catch faults early: blood pressure, dentist, blood tests, mole check, screenings, vaccines, eyes, first-aid kit.
