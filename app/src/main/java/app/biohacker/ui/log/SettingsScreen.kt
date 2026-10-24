@@ -32,6 +32,7 @@ import app.biohacker.domain.Sys
 import app.biohacker.notify.Bell
 import app.biohacker.ui.Home
 import app.biohacker.ui.components.Chip
+import app.biohacker.ui.components.CommunityLinks
 import app.biohacker.ui.components.Gap
 import app.biohacker.ui.components.Section
 import app.biohacker.ui.components.TopBar
@@ -84,7 +85,9 @@ fun SettingsScreen(h: Home, onClose: () -> Unit) {
             }
             Section(w.t("Подсказки", "Hints"), num = "06")
             Text(w.t("ПОКАЗАТЬ ПОДСКАЗКИ ЗАНОВО ›", "SHOW THE HINTS AGAIN ›"), style = T.Label.copy(color = C.amber), modifier = Modifier.clickable { c.write { repo.coachReset() } }.padding(horizontal = 20.dp, vertical = 8.dp))
-            Section(w.t("О приложении", "About"), num = "07")
+            Section(w.t("Сообщество", "Community"), num = "07")
+            CommunityLinks(w)
+            Section(w.t("О приложении", "About"), num = "08")
             Text(
                 w.t(
                     "Биохакер ${BuildConfig.VERSION_NAME}. Всё хранится только на телефоне: без аккаунтов, рекламы и интернета.\n\nКарточки — обобщение исследований, а не медицинский совет. Классы доказательности — честная, но грубая оценка. Если есть болезни, беременность или лекарства — посоветуйся с врачом.",

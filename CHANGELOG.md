@@ -15,6 +15,7 @@ then close it like any HTML comment. The release notes carry it, and the chat bo
 - Power that limits how much runs at once and grows with the firmware. Version and build numbers, weekly patch notes.
 - A daily parcel with a sealed card. Bonus parcels for finished trials and for every ten cards studied. 96 broken mods (myths) to collect.
 - 40 hidden combos, an emergency patch for days in the red, uptime with one bridged day a week, and scheduled service check-ups.
+- Community links in settings and the log: report a bug, suggest an idea or follow updates through the StillCraft bot on Telegram.
 - First-visit hints on every screen, one daily reminder, synthesised sounds, EN and RU, a demo build.
 
 <!-- tg

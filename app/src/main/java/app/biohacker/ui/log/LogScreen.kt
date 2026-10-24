@@ -40,6 +40,7 @@ import app.biohacker.ui.Nav
 import app.biohacker.ui.components.BottomSheet
 import app.biohacker.ui.components.Btn
 import app.biohacker.ui.components.Chip
+import app.biohacker.ui.components.CommunityLinks
 import app.biohacker.ui.components.Dot
 import app.biohacker.ui.components.Gap
 import app.biohacker.ui.components.Kind
@@ -73,6 +74,8 @@ fun LogScreen(h: Home, nav: Nav) {
                 ComboList(h)
                 Section(w.t("Плановое ТО", "Scheduled service"), num = "04")
                 for (u in Upkeep.all) UpkeepRow(h, u) { upkeep = u }
+                Section(w.t("Баги, идеи, обновления", "Bugs, ideas, updates"), num = "05")
+                CommunityLinks(w)
                 Text(
                     w.t("Приложение не заменяет врача. Если что-то беспокоит — к специалисту.", "This app is not a doctor. If something worries you, see a professional."),
                     style = T.Small.copy(color = C.faint), modifier = Modifier.padding(20.dp),
