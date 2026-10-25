@@ -37,6 +37,7 @@ import app.biohacker.domain.Upkeep
 import app.biohacker.domain.Week
 import app.biohacker.ui.Home
 import app.biohacker.ui.Nav
+import app.biohacker.ui.components.HelpButton
 import app.biohacker.ui.components.BottomSheet
 import app.biohacker.ui.components.Btn
 import app.biohacker.ui.components.Chip
@@ -61,7 +62,7 @@ fun LogScreen(h: Home, nav: Nav) {
     var upkeep by remember { mutableStateOf<Upkeep?>(null) }
     Box(Modifier.fillMaxSize().grid()) {
         Column(Modifier.fillMaxSize()) {
-            TopBar(w.t("Журнал", "Log"), "${w.version(h.major, h.minor)} · ${w.t("сборка", "build")} ${h.build}")
+            TopBar(w.t("Журнал", "Log"), "${w.version(h.major, h.minor)} · ${w.t("сборка", "build")} ${h.build}", end = { HelpButton { nav.help("log") } })
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 Section(w.t("Патчноуты", "Patch notes"), num = "01")
                 if (h.weeks.isEmpty()) Text(w.t("Первый патч выйдет в понедельник.", "The first patch comes out on Monday."), style = T.Small, modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp))

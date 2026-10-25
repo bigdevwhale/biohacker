@@ -32,6 +32,7 @@ import app.biohacker.domain.Metric
 import app.biohacker.domain.Reading
 import app.biohacker.ui.Home
 import app.biohacker.ui.Nav
+import app.biohacker.ui.components.HelpButton
 import app.biohacker.ui.components.Btn
 import app.biohacker.ui.components.Chip
 import app.biohacker.ui.components.EvBadge
@@ -56,7 +57,7 @@ fun ReadingsScreen(h: Home, nav: Nav, onClose: () -> Unit) {
     val v = remember(day) { mutableStateListOf<Int?>().apply { val r = h.s.reading(day); Metric.entries.forEach { add(r?.get(it)) } } }
     var saved by remember { mutableStateOf<Reading?>(null) }
     Column(Modifier.fillMaxSize().grid()) {
-        TopBar(w.t("Показания", "Readings"), w.date(LocalDate.ofEpochDay(day)) + " · " + w.t("сборка", "build") + " ${h.build + if (h.s.reading(day) == null) 1 else 0}", onBack = onClose)
+        TopBar(w.t("Показания", "Readings"), w.date(LocalDate.ofEpochDay(day)) + " · " + w.t("сборка", "build") + " ${h.build + if (h.s.reading(day) == null) 1 else 0}", onBack = onClose, end = { HelpButton { nav.help("log") } })
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
             val done = saved
             if (done != null) {

@@ -38,6 +38,54 @@ class Words(val ru: Boolean) {
         Sys.JOY -> t("настроение и смысл", "mood and meaning"); Sys.LINK -> t("люди и природа", "people and nature")
     }
 
+    /** What a system covers and which gauge it moves, built from its tags so it never drifts from the catalogue. */
+    fun sysAbout(s: Sys) = t(
+        "Отвечает за: ${s.tags.joinToString(", ") { tag(it) }}. Двигает прибор «${metric(s.metric)}».",
+        "Covers: ${s.tags.joinToString(", ") { tag(it) }}. Moves the ${metric(s.metric)} gauge.",
+    )
+
+    /** The glossary, one section per screen; [first] goes on top. */
+    fun glossary(first: String?): List<Pair<String, List<Pair<String, String>>>> {
+        val all = listOf(
+            "systems" to (t("Системы тела", "Body systems") to Sys.entries.map { "${it.code} · ${sys(it)} — ${sysTag(it)}" to sysAbout(it) }),
+            "evidence" to (t("Доказательность", "Evidence") to "ABCD".map { "$it — ${ev(it)}" to evLong(it) }),
+            "card" to (t("Карточка мода", "A mod card") to listOf(
+                t("Мод", "Mod") to t("Один протокол: конкретное действие, которое можно встроить в день. Шифр вроде CLK-014 — код системы и номер.", "One protocol: a concrete thing to fit into your day. A code like CLK-014 is the system's code and a number."),
+                t("Редкость", "Rarity") to t("Обычная, редкая, легендарная — как часто карточка выпадает в посылке. Редкая не значит лучше: это менее известные протоколы.", "Common, rare, legendary: how often a card turns up in a parcel. Rare doesn't mean better, just less known."),
+                t("Нагрузка", "Load") to t("Лёгкий, средний, тяжёлый — сколько мощности мод занимает на испытании: 1, 2 или 3 единицы.", "Light, medium, heavy: how much power a mod takes while on trial, 1, 2 or 3 units."),
+                t("Когда · сколько · как часто", "When · how long · how often") to t("Время дня, минуты на один раз и сколько раз в неделю его делать.", "Time of day, minutes each time, and how many times a week."),
+                t("Новая", "New") to t("Карточку ещё не открывали. Открытая считается изученной, за каждые десять — бонусная посылка.", "You haven't opened the card yet. Opened cards count as studied; every ten earn a bonus parcel."),
+                t("Сломанный мод", "Broken mod") to t("Популярный хак, который не подтвердился. На карточке — что на самом деле говорят данные. Приходят в посылках.", "A popular hack that didn't hold up, with what the evidence actually says. They come in parcels."),
+            )),
+            "lab" to (t("Лаборатория", "The lab") to listOf(
+                t("Испытание", "Trial") to t("14 дней с модом. Отмечай дни, когда сделал его, и снимай показания — лаборатория сравнит дни с модом и без.", "14 days with a mod. Tick the days you did it and take readings; the lab compares days with and without it."),
+                t("Мощность", "Power") to t("Сколько испытаний может идти одновременно. Сначала 3 единицы, каждые два мода в прошивке дают +1, максимум 8.", "How much can be on trial at once. You start with 3 units; every two installed mods add one, up to 8."),
+                t("Прошивка", "Firmware") to t("Моды, которые ты решил оставить после испытания. Они загораются узлами на чертеже.", "Mods you chose to keep after a trial. They light up as nodes on the blueprint."),
+                t("Протокол", "Protocol") to t("Итог испытания: «работает», «нет эффекта», «хуже» или «мало данных». Решение всё равно за тобой.", "A trial's result: works, no effect, worse, or thin data. The decision is still yours."),
+                t("Продлить", "Extend") to t("Ещё 7 дней испытания, если данных мало или хочется проверить точнее.", "Seven more days on trial, if data is thin or you want to be sure."),
+                t("Архив гипотез", "Hypotheses archive") to t("Отклонённые, прерванные и снятые моды. Любой можно испытать снова.", "Rejected, stopped and removed mods. Any of them can go on trial again."),
+            )),
+            "body" to (t("Чертёж и цифры", "Blueprint and numbers") to listOf(
+                t("Узлы", "Nodes") to t("Цветной узел — мод в прошивке, голубой — на испытании, тусклый — заброшенный мод. Золотое кольцо — найденное комбо.", "A coloured node is an installed mod, cyan is on trial, dim is a neglected mod. A gold ring is a found combo."),
+                t("Версия", "Version") to t("Начинается с v1.0, каждый мод в прошивке добавляет 0.1.", "Starts at v1.0; every installed mod adds 0.1."),
+                t("Сборка", "Build") to t("Сколько дней ты снимал показания.", "How many days you've taken readings."),
+                t("Аптайм", "Uptime") to t("Сколько дней подряд есть показания. Один пропуск в неделю счёт не обнуляет.", "Days in a row with readings. One missed day a week doesn't reset it."),
+                t("Покрытие", "Coverage") to t("Во скольких из восьми систем есть хотя бы один мод в прошивке.", "How many of the eight systems have at least one installed mod."),
+                t("Прошивка N%", "Firmware N%") to t("Насколько регулярно ты делал установленные моды за последнюю неделю. Если мод почти не делать, его узел тускнеет.", "How regularly you did your installed mods over the last week. A mod you barely do fades on the blueprint."),
+            )),
+            "log" to (t("Показания и журнал", "Readings and the log") to listOf(
+                t("Показания", "Readings") to t("Раз в день пять приборов: сон, энергия, настроение, фокус, спокойствие — по шкале из пяти делений.", "Once a day, five gauges: sleep, energy, mood, focus, calm, each on a five-step scale."),
+                t("Глитч", "Glitch") to t("День, когда прибор в красной зоне. Не провал, а сигнал.", "A day with a gauge in the red. Not a failure, a signal."),
+                t("Аварийный патч", "Emergency patch") to t("Три коротких мода с хорошими данными для того, что просело сегодня.", "Three short, well-backed mods for whatever sagged today."),
+                t("Посылка", "Parcel") to t("Раз в день — запечатанная карточка, чаще из главных систем (они выбираются в настройках). Бонусные — за изученные карточки и завершённые испытания.", "Once a day, a sealed card, leaning to your main systems (set in settings). Bonus parcels come for studied cards and finished trials."),
+                t("Комбо", "Combo") to t("Скрытое сочетание двух модов, которые усиливают друг друга. Находится, когда обе половинки в прошивке.", "A hidden pairing of two mods that boost each other. Found when both halves are installed."),
+                t("Патчноуты", "Patch notes") to t("Итоги недели по понедельникам: что установлено и отклонено, какой прибор вырос, известные проблемы.", "The week's summary every Monday: installed and rejected, which gauge went up, known issues."),
+                t("Плановое ТО", "Scheduled service") to t("Проверки у врачей и дома, которые ловят поломки заранее. Отметь, когда прошёл, — приложение напомнит о следующей.", "Check-ups at the doctor's and at home that catch faults early. Mark one done and the app shows when the next is due."),
+            )),
+        )
+        return all.sortedBy { if (it.first == first) 0 else 1 }.map { it.second }
+    }
+
     fun tag(g: Tag) = when (g) {
         Tag.LIGHT -> t("свет", "light"); Tag.DARK -> t("темнота", "darkness"); Tag.RHYTHM -> t("ритм", "rhythm"); Tag.ROOM -> t("спальня", "bedroom")
         Tag.WINDDOWN -> t("отбой", "wind-down"); Tag.NAP -> t("дневной сон", "naps")

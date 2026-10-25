@@ -25,6 +25,7 @@ import app.biohacker.domain.Status
 import app.biohacker.domain.Trial
 import app.biohacker.ui.Home
 import app.biohacker.ui.Nav
+import app.biohacker.ui.components.HelpButton
 import app.biohacker.ui.components.Bar
 import app.biohacker.ui.components.Btn
 import app.biohacker.ui.components.Cells
@@ -43,7 +44,7 @@ import app.biohacker.ui.theme.T
 fun LabScreen(h: Home, nav: Nav) {
     val w = h.w
     Column(Modifier.fillMaxSize().grid()) {
-        TopBar(w.t("Лаборатория", "The lab"), w.t("мощность ${h.used}/${h.capacity} · прошивка ${h.firmware.size}", "power ${h.used}/${h.capacity} · firmware ${h.firmware.size}"))
+        TopBar(w.t("Лаборатория", "The lab"), w.t("мощность ${h.used}/${h.capacity} · прошивка ${h.firmware.size}", "power ${h.used}/${h.capacity} · firmware ${h.firmware.size}"), end = { HelpButton { nav.help("lab") } })
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Power(h, nav)
             val running = h.s.running

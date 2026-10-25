@@ -40,6 +40,7 @@ import app.biohacker.ui.Nav
 import app.biohacker.ui.components.Chip
 import app.biohacker.ui.components.EvBadge
 import app.biohacker.ui.components.Gap
+import app.biohacker.ui.components.HelpButton
 import app.biohacker.ui.components.Rarity
 import app.biohacker.ui.components.TopBar
 import app.biohacker.ui.components.frame
@@ -58,7 +59,7 @@ fun CatalogScreen(h: Home, nav: Nav, sys: Sys?, onSys: (Sys?) -> Unit) {
     var filters by remember { mutableStateOf(setOf<Filter>()) }
     val studied = h.s.bag.studied
     Column(Modifier.fillMaxSize().grid()) {
-        TopBar(w.t("Картотека", "Card index"), w.t("изучено ${studied.count { h.cat[it] != null }} из ${h.cat.all.size} · мифов ${h.s.bag.myths.size}/${h.cat.myths.size}", "studied ${studied.count { h.cat[it] != null }} of ${h.cat.all.size} · myths ${h.s.bag.myths.size}/${h.cat.myths.size}"))
+        TopBar(w.t("Картотека", "Card index"), w.t("изучено ${studied.count { h.cat[it] != null }} из ${h.cat.all.size} · мифов ${h.s.bag.myths.size}/${h.cat.myths.size}", "studied ${studied.count { h.cat[it] != null }} of ${h.cat.all.size} · myths ${h.s.bag.myths.size}/${h.cat.myths.size}"), end = { HelpButton { nav.help(if (sys != null) "systems" else "card") } })
         Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 10.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Chip(w.t("Протоколы", "Protocols"), on = !myths) { myths = false }
             Chip(w.t("Сломанные моды", "Broken mods"), on = myths, color = C.red) { myths = true }
@@ -86,6 +87,7 @@ fun CatalogScreen(h: Home, nav: Nav, sys: Sys?, onSys: (Sys?) -> Unit) {
             Chip(w.t("Не изучено", "Unread"), on = Filter.NEW in filters) { filters = filters.toggle(Filter.NEW) }
             Chip(w.t("Редкие", "Rare"), on = Filter.RARE in filters) { filters = filters.toggle(Filter.RARE) }
         }
+        Explain(h, sys, ev)
         val words = q.trim().lowercase().split(' ').filter { it.isNotEmpty() }
         val list = remember(sys, ev, filters, q, studied, h.cat) {
             h.cat.all.filter { m ->
@@ -100,6 +102,20 @@ fun CatalogScreen(h: Home, nav: Nav, sys: Sys?, onSys: (Sys?) -> Unit) {
             items(list, key = { it.id }) { m -> ModRow(h, m) { nav.mod(m.id) } }
             item { Gap(24) }
         }
+    }
+}
+
+/** What the picked system or evidence class means, right under the filters. */
+@Composable
+private fun Explain(h: Home, sys: Sys?, ev: Set<Char>) {
+    val w = h.w
+    if (sys == null && ev.isEmpty()) return
+    Column(Modifier.fillMaxWidth().padding(horizontal = 16.dp).padding(bottom = 6.dp).frame(C.card, C.faint, if (sys != null) C.sys(sys) else C.ev(ev.min())).padding(horizontal = 12.dp, vertical = 8.dp)) {
+        if (sys != null) {
+            Text("${sys.code} · ${w.sys(sys).uppercase()} — ${w.sysTag(sys)}", style = T.Label.copy(color = C.sys(sys)))
+            Text(w.sysAbout(sys), style = T.Small)
+        }
+        for (e in ev.sorted()) Text("$e — ${w.ev(e)}: ${w.evLong(e).replaceFirstChar { it.lowercase() }}", style = T.Small, modifier = Modifier.padding(top = if (sys != null || e != ev.min()) 4.dp else 0.dp))
     }
 }
 

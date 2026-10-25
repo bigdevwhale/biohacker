@@ -135,10 +135,10 @@ fun Section(title: String, modifier: Modifier = Modifier, num: String? = null, l
 }
 
 @Composable
-fun TopBar(title: String, sub: String? = null, modifier: Modifier = Modifier, onBack: (() -> Unit)? = null, end: @Composable RowScope.() -> Unit = {}) {
+fun TopBar(title: String, sub: String? = null, modifier: Modifier = Modifier, onBack: (() -> Unit)? = null, start: @Composable () -> Unit = {}, end: @Composable RowScope.() -> Unit = {}) {
     Row(modifier.fillMaxWidth().background(C.nav).statusBarsPadding().padding(horizontal = 8.dp, vertical = 6.dp), verticalAlignment = Alignment.CenterVertically) {
         Box(Modifier.size(44.dp).let { if (onBack != null) it.clickable(onClick = onBack) else it }, contentAlignment = Alignment.Center) {
-            if (onBack != null) Icon(Icons.AutoMirrored.Filled.ArrowBack, null, tint = C.line)
+            if (onBack != null) Icon(Icons.AutoMirrored.Filled.ArrowBack, null, tint = C.line) else start()
         }
         Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(title.uppercase(), style = T.Code.copy(color = C.ink, letterSpacing = 2.sp, fontSize = 15.sp), textAlign = TextAlign.Center)
@@ -235,7 +235,7 @@ fun BottomSheet(visible: Boolean, onClose: () -> Unit, content: @Composable Colu
     AnimatedVisibility(visible, enter = fadeIn(tween(150)), exit = fadeOut(tween(150))) {
         Box(Modifier.fillMaxSize().background(C.shade).clickable(interactionSource = remember { MutableInteractionSource() }, indication = null, onClick = onClose))
     }
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+    Box(Modifier.fillMaxSize().statusBarsPadding().padding(top = 24.dp), contentAlignment = Alignment.BottomCenter) {
         AnimatedVisibility(visible, enter = slideInVertically(tween(220)) { it }, exit = slideOutVertically(tween(180)) { it }) {
             Column(
                 Modifier.fillMaxWidth().frame(C.paper2, C.faint, C.line).clickable(interactionSource = remember { MutableInteractionSource() }, indication = null) {}

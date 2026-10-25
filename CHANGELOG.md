@@ -6,6 +6,21 @@ line "<!-- tg", then 2-4 short lines in Russian for users (what is new, what is 
 then close it like any HTML comment. The release notes carry it, and the chat bot posts those lines.
 -->
 
+## [1.0.1] - 2026-10-25
+
+### Added
+- A glossary behind the «?» in the top bar of every main screen: the eight systems, evidence classes, a mod card, the lab, the blueprint's numbers, readings and the log. The section for the current screen comes first.
+- In the card index, picking a system or an evidence class shows what it means: which areas the system covers and which gauge it moves. The system sheet on the blueprint says the same, and the uptime, power and coverage tiles open the glossary.
+
+### Fixed
+- Bottom sheets no longer slide under the status bar.
+
+<!-- tg
+Биохакер 1.0.1: справочник терминов — кнопка «?» в шапке каждого экрана
+В картотеке при выборе системы видно, за что она отвечает и какой прибор двигает; то же для классов A–D
+Шторки больше не заезжают под строку состояния
+-->
+
 ## [1.0.0] - 2026-10-24
 
 ### Added

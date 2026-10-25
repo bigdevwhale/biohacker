@@ -58,6 +58,7 @@ import app.biohacker.ui.catalog.CatalogScreen
 import app.biohacker.ui.catalog.ModScreen
 import app.biohacker.ui.components.BottomSheet
 import app.biohacker.ui.components.Btn
+import app.biohacker.ui.components.GlossarySheet
 import app.biohacker.ui.intake.Intake
 import app.biohacker.ui.lab.LabScreen
 import app.biohacker.ui.lab.TrialScreen
@@ -117,6 +118,7 @@ class Nav(
     val parcel: (Boolean) -> Unit,
     val catalog: (Sys?) -> Unit,
     val settings: () -> Unit,
+    val help: (String) -> Unit = {},
 )
 
 @Composable
@@ -145,6 +147,7 @@ fun BiohackerRoot(settings: Settings) {
     val overlays = remember { mutableStateListOf<Overlay>() }
     fun push(o: Overlay) = overlays.add(o)
     fun pop() { if (overlays.isNotEmpty()) overlays.removeAt(overlays.lastIndex) }
+    var help by remember { mutableStateOf<String?>(null) }
     BackHandler(enabled = overlays.isNotEmpty()) { pop() }
     BackHandler(enabled = overlays.isEmpty() && tab != Tab.BLUEPRINT) { tab = Tab.BLUEPRINT }
     val nav = Nav(
@@ -155,6 +158,7 @@ fun BiohackerRoot(settings: Settings) {
         parcel = { push(Overlay.Parcel(it)) },
         catalog = { overlays.clear(); catSys = it; tab = Tab.CATALOG },
         settings = { push(Overlay.Settings) },
+        help = { help = it },
     )
 
     Box(Modifier.fillMaxSize().background(C.paper)) {
@@ -179,6 +183,7 @@ fun BiohackerRoot(settings: Settings) {
         }
         val coachKey = when (overlays.lastOrNull()) { Overlay.Readings -> "readings"; null -> tab.coach; else -> null }
         Coach(home, coachKey)
+        GlossarySheet(words, help) { help = null }
     }
 }
 

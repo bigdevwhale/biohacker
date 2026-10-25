@@ -27,6 +27,7 @@ import app.biohacker.domain.Mod
 import app.biohacker.ui.Home
 import app.biohacker.ui.Nav
 import app.biohacker.ui.Tab
+import app.biohacker.ui.components.HelpButton
 import app.biohacker.ui.components.Btn
 import app.biohacker.ui.components.EvBadge
 import app.biohacker.ui.components.Gap
@@ -53,7 +54,7 @@ fun ModScreen(h: Home, id: String, nav: Nav, onClose: () -> Unit) {
     var started by remember(id) { mutableStateOf(false) }
     LaunchedEffect(id) { if (wasNew) c.repo.study(id) }
     Column(Modifier.fillMaxSize().grid()) {
-        TopBar(m?.code ?: id, m?.let { w.sys(it.sys) + " · " + w.tag(it.tag) }, onBack = onClose)
+        TopBar(m?.code ?: id, m?.let { w.sys(it.sys) + " · " + w.tag(it.tag) }, onBack = onClose, end = { HelpButton { nav.help("card") } })
         if (m == null) return@Column
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
             Card(h, m)

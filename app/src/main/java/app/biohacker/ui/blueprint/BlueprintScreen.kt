@@ -43,6 +43,7 @@ import app.biohacker.ui.components.Btn
 import app.biohacker.ui.components.Dot
 import app.biohacker.ui.components.EvBadge
 import app.biohacker.ui.components.Gap
+import app.biohacker.ui.components.HelpButton
 import app.biohacker.ui.components.Kind
 import app.biohacker.ui.components.Panel
 import app.biohacker.ui.components.Section
@@ -62,11 +63,12 @@ fun BlueprintScreen(h: Home, nav: Nav) {
             TopBar(
                 w.t("Биохакер", "Biohacker"),
                 "${h.s.bag.subject.ifBlank { w.t("испытуемый", "subject") }} · ${w.version(h.major, h.minor)} · ${w.t("сборка", "build")} ${h.build}",
+                start = { HelpButton { nav.help("body") } },
                 end = { Icon(Icons.Outlined.Settings, null, tint = C.muted, modifier = Modifier.size(40.dp).clickable(onClick = nav.settings).padding(8.dp)) },
             )
             Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
                 Blueprint(h.plan, Modifier.fillMaxWidth().height(430.dp).padding(top = 8.dp)) { sys = it }
-                Stats(h)
+                Stats(h) { nav.help("body") }
                 Banners(h, nav)
                 Today(h, nav)
                 Gap(24)
@@ -77,14 +79,14 @@ fun BlueprintScreen(h: Home, nav: Nav) {
 }
 
 @Composable
-private fun Stats(h: Home) {
+private fun Stats(h: Home, onHelp: () -> Unit) {
     val w = h.w
     val up = Engine.uptime(h.s, h.today)
     val cov = Engine.coverage(h.s, h.cat).size
     Row(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        Tile(w.t("Аптайм", "Uptime"), w.days(up), C.green, Modifier.weight(1f))
-        Tile(w.t("Мощность", "Power"), "${h.used}/${h.capacity}", if (h.used >= h.capacity) C.amber else C.cyan, Modifier.weight(1f))
-        Tile(w.t("Покрытие", "Coverage"), "$cov/8", C.violet, Modifier.weight(1f))
+        Tile(w.t("Аптайм", "Uptime"), w.days(up), C.green, Modifier.weight(1f).clickable(onClick = onHelp))
+        Tile(w.t("Мощность", "Power"), "${h.used}/${h.capacity}", if (h.used >= h.capacity) C.amber else C.cyan, Modifier.weight(1f).clickable(onClick = onHelp))
+        Tile(w.t("Покрытие", "Coverage"), "$cov/8", C.violet, Modifier.weight(1f).clickable(onClick = onHelp))
     }
 }
 
@@ -211,6 +213,7 @@ private fun SystemSheet(h: Home, sys: Sys?, nav: Nav, onClose: () -> Unit) {
             Text("${s.code} · ${w.sys(s).uppercase()}", style = T.Code.copy(color = C.sys(s)), modifier = Modifier.padding(start = 10.dp))
         }
         Text(w.sysTag(s).replaceFirstChar { it.uppercase() }, style = T.Title, modifier = Modifier.padding(top = 6.dp))
+        Text(w.sysAbout(s), style = T.Body, modifier = Modifier.padding(top = 4.dp))
         val mine = (h.firmware + h.s.running).filter { h.cat[it.mod]?.sys == s }
         Text(
             w.t("Модов в прошивке: ${mine.count { it.status == Status.ON }} · на испытании: ${mine.count { it.status == Status.RUN }} · в картотеке: ${h.cat.of(s).size}",

@@ -35,6 +35,7 @@ import app.biohacker.domain.Trial
 import app.biohacker.domain.Verdict
 import app.biohacker.ui.Home
 import app.biohacker.ui.Nav
+import app.biohacker.ui.components.HelpButton
 import app.biohacker.ui.components.BottomSheet
 import app.biohacker.ui.components.Btn
 import app.biohacker.ui.components.EvBadge
@@ -59,7 +60,7 @@ fun TrialScreen(h: Home, id: Long, nav: Nav, onClose: () -> Unit) {
     var installed by remember { mutableStateOf<Pair<Int, List<Combo>>?>(null) }
     var confirmDrop by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxSize().grid()) {
-        TopBar(m?.code ?: "", t?.let { w.status(it.status) }, onBack = onClose)
+        TopBar(m?.code ?: "", t?.let { w.status(it.status) }, onBack = onClose, end = { HelpButton { nav.help("lab") } })
         if (t == null || m == null) return@Column
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState())) {
             Panel(onClick = { nav.mod(m.id) }) {
